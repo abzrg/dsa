@@ -4,4 +4,4 @@ set -e
 
 printf "\n[----RUN----]\n\n"
 
-find build/  -name "${1}"  -not -path '*dSYM/**' -prune -exec '{}' \;
+find build/ -type f -executable  -name "${1}"  -not -path '*dSYM/**' -prune -exec '{}' \;
