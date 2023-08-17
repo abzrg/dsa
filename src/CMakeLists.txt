@@ -1,3 +1,4 @@
 add_subdirectory(static_array)
+add_subdirectory(linear_search)
 add_subdirectory(linked_list)
 add_subdirectory(queue)
