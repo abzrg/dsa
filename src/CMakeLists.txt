@@ -1,1 +1,2 @@
 add_subdirectory(static_array)
+add_subdirectory(linear_search)
