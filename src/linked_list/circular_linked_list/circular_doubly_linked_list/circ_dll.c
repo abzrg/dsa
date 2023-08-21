@@ -24,7 +24,7 @@ struct circ_dll_t {
     size_t length;
 };
 
-// Initializes a list to zero/NULL
+
 void dll_init(circ_dll_t** self)
 {
     *self = malloc(sizeof(**self));
@@ -35,19 +35,18 @@ void dll_init(circ_dll_t** self)
     }
 }
 
-// Deallocate/Destruct a list
 void dll_terminate(circ_dll_t** self)
 {
     dnode_t* head = (*self)->head;
 
-    // for (size_t i = 0, len = (*self)->length; i < len; i++) {
-    //     dnode_t* tmp = head;
-    //     head = head->next;
-    //     free(tmp);
-    // }
+    for (size_t i = 0, len = (*self)->length; i < len; i++) {
+        dnode_t* tmp = head;
+        head = head->next;
+        free(tmp);
+    }
 
-    int _;
-    while (dll_pop(*self, &_)) { }
+    // int _;
+    // while (dll_pop(*self, &_)) { }
 
     free(*self);
 }
@@ -58,7 +57,6 @@ size_t dll_get_len(const circ_dll_t* self)
     return self->length;
 }
 
-// Prepends a node to a list
 void dll_prepend(circ_dll_t* self, int value)
 {
     assert(self != NULL && "The container is NULL.");
@@ -84,7 +82,6 @@ void dll_prepend(circ_dll_t* self, int value)
     self->length++;
 }
 
-// Appends a node to the end of the list
 void dll_append(circ_dll_t* self, int value)
 {
     assert(self != NULL && "The container is NULL.");
@@ -108,7 +105,6 @@ void dll_append(circ_dll_t* self, int value)
     self->length++;
 }
 
-// Inserts a node at a specific place ("index") in the list
 void dll_insert_at(circ_dll_t* self, size_t index, int value)
 {
     assert(self != NULL && "The container is NULL.");
@@ -126,7 +122,6 @@ void dll_insert_at(circ_dll_t* self, size_t index, int value)
         dll_append(self, value);
     }
 
-    // Traverse index item into list
     dnode_t* tmp = self->head;
     for (size_t i = 0; i < index; i++) {
         tmp = tmp->next;
@@ -145,14 +140,12 @@ void dll_insert_at(circ_dll_t* self, size_t index, int value)
     self->length++;
 }
 
-// Returns a copy of the value at a certain position ("index") in the list
 int dll_get(const circ_dll_t* self, size_t index)
 {
     assert(self != NULL && "The container is NULL.");
     assert(index < self->length
            && "Cannot insert at the given index. Index out of bound.");
 
-    // Traverse index item into list
     dnode_t* tmp = self->head;
     for (size_t i = 0; i < index; i++) {
         tmp = tmp->next;
@@ -161,7 +154,6 @@ int dll_get(const circ_dll_t* self, size_t index)
     return tmp->value;
 }
 
-// Pop from tail side
 bool dll_pop(circ_dll_t* self, int* retval)
 {
     if (self->length == 0) {
@@ -190,7 +182,6 @@ bool dll_pop(circ_dll_t* self, int* retval)
     return true;
 }
 
-// pop from head side
 bool dll_popleft(circ_dll_t* self, int* retval)
 {
     assert(self != NULL && "The container is NULL.");
@@ -220,8 +211,6 @@ bool dll_popleft(circ_dll_t* self, int* retval)
     return true;
 }
 
-// Removes an element at a certain position
-// returns false if the index was out of bound or list was empty.
 bool dll_remove_at(circ_dll_t* self, size_t index, int* retval)
 {
     assert(self != NULL && "The container is NULL.");
@@ -244,20 +233,16 @@ bool dll_remove_at(circ_dll_t* self, size_t index, int* retval)
         return dll_pop(self, retval);
     }
 
-    // Traverse index item into list
     dnode_t* tmp = self->head;
     for (size_t i = 0; i < index; i++) {
         tmp = tmp->next;
     }
 
-    // Get the value to be removed
     *retval = tmp->value;
 
-    // Rearrange nodes in the list
     tmp->prev->next = tmp->next;
     tmp->next->prev = tmp->prev;
 
-    // Release the node resource
     free(tmp);
 
     self->length--;
@@ -273,9 +258,6 @@ int dll_remove(circ_dll_t* self, int value)
 
     dnode_t* node = self->head;
 
-    // h     t
-    // a<-b->c
-    // a->b<-c
     for (size_t i = 0, len = self->length; i < len; i++) {
         if (value == node->value) {
             if (i == 0) {

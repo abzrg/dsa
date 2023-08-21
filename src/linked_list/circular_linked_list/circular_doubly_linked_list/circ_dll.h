@@ -32,9 +32,12 @@ int dll_get(const circ_dll_t* self, size_t index);
 // Pop a value from the end of the list
 bool dll_pop(circ_dll_t* self, int* retval);
 
-// pop from head side
+// Pop from head side
 bool dll_popleft(circ_dll_t* self, int* retval);
 
+// Remove value at a certain offset from the beginning of the list
+// Returns false if index is out of bound or value could not be found in the
+// list
 bool dll_remove_at(circ_dll_t* self, size_t index, int* retval);
 
 // Removes the first node in the list with a specific value

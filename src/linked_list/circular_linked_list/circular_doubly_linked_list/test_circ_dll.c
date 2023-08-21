@@ -10,7 +10,6 @@ int main(void)
     circ_dll_t* list;
     dll_init(&list);
 
-
     // Test dll_prepend and dll_append
     dll_prepend(list, 10);
     dll_prepend(list, 20);
@@ -22,9 +21,7 @@ int main(void)
     dll_insert_at(list, 2, 25);
     print_list(list);
 
-
     putchar('\n');
-
 
     // Test dll_get_length and dll_get
     size_t length = dll_get_len(list);
@@ -35,9 +32,7 @@ int main(void)
     }
     print_list(list);
 
-
     putchar('\n');
-
 
     // Test dll_pop and dll_popleft
     int value;
@@ -51,9 +46,7 @@ int main(void)
         printf("Could not pop value. List is empty.\n");
     }
 
-
     putchar('\n');
-
 
     // Test dll_remove_at
     dll_prepend(list, 10);
@@ -67,9 +60,7 @@ int main(void)
         printf("Removed value at index 0: %d\n", value);
     }
 
-
     putchar('\n');
-
 
     // Test dll_remove
     dll_append(list, 40);
@@ -77,7 +68,7 @@ int main(void)
     int index = dll_remove(list, 40);
     printf("Value 40 removed from index: %d\n", index);
 
-
+    dll_terminate(&list);
 
     return 0;
 }
