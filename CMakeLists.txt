@@ -11,4 +11,8 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS True)
 
+# src (user: serghei): https://stackoverflow.com/a/64294837/13041067
+# To fully detect memory leaks set env var: ASAN_OPTIONS=detect_leaks=1
+include(cmake/asan.cmake)
+
 add_subdirectory(src)
