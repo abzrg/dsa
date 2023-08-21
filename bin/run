@@ -1,7 +1,33 @@
 #!/bin/sh
 
+# Finds and runs executables inside the hodgepodge of cmake build directory
+# If the CMAKE_BUILD_TYPE is set to Asan then it will run programs with the
+# environment variable 'ASAN_OPTIONS=detect_leaks=1' set.
+
 set -e
+
+
+usage() {
+    printf "Usage: %s <target>\n" "$0"
+}
+
+[ $# -ne 1 ] && usage && exit 1
+
+script_path="$(realpath $0)"
+script_dir="$(dirname ""$script_path"")"
+project_root="$(printf ""$script_dir"" | sed ""s/bin$//g"")"
+
 
 printf "\n[----RUN----]\n\n"
 
-find build/ -type f -executable -name "${1}"  -not -path '*dSYM/**' -prune -exec '{}' \;
+
+# Find the executable
+exe="$(find build/ -type f -executable -name ""${1}""  -not -path '*dSYM/**' -prune)"
+
+
+# Run with the build type in mind
+if grep -q '^CMAKE_BUILD_TYPE:STRING=Asan$' "$project_root/build/CMakeCache.txt"; then
+    ASAN_OPTIONS=detect_leaks=1 $exe
+else
+    $exe
+fi
